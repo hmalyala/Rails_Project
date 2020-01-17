@@ -1,0 +1,56 @@
+<section class="movie-details">
+  <div class="image">
+    <%= image_tag @movies.image_file_name || "logo" %>
+  </div>
+<div class="details">
+  <h1><%= @movies.title %></h1>
+  <h2>
+    <%= @movies.released_on %> &bull; <%= @movies.rating %>
+  </h2>
+
+  <div class="reviews">
+  <%= average_stars(@movies) %>
+    <%= link_to pluralize(@movies.reviews.size, "review"),
+                  movie_reviews_path(@movies) %>
+  </div>
+
+  <p>
+    <%= @movies.description %>
+  </p>
+  <table>
+    <tr>
+        <th>Director:</th>
+        <td><%= @movies.director %></td>
+    </tr>
+    <tr>
+        <th>Duration:</th>
+        <td><%= @movies.duration %></td>
+    </tr>
+    <tr>
+      <th>Total Gross:</th>
+      <td><%= verdict(@movies) %></td>
+    </tr>
+  </table>      
+        <%= link_to "Write Review", new_movie_review_path(@movies),
+              class: "review" %>
+
+              <aside>
+<% if @fans.present? %>
+    <h4>Fans</h4>
+    <ul>
+      <% @fans.each do |user| %>
+        <li>
+          <%= link_to user.name, user %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</aside>
+</div>
+</section>
+<% if user_login && user_login.admin_user  %>
+    <section class="admin">
+        <%= link_to "Edit", edit_movie_path(@movies), class: "button" %>
+        <%= link_to "Delete", movie_path(@movies), class: "button", method: :delete   %>
+    </section>
+<% end  %>

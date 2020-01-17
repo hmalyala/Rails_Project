@@ -1,0 +1,15 @@
+<%= form_with(model: [@movie, @review], local:true) do |f| %>
+
+    <%= render "shared/error", object: @review %>
+
+    <h2> <%= link_to user_login.name, user_login %>  </h2>
+
+    <%= f.label :stars %>
+    <%= f.text_field :stars, Review: :STARS, prompt: "Pick one" %>
+
+    <%= f.label :comment %>
+    <%= f.text_area :comment, placeholder: "What did you think?", rows: 4 %>
+
+    <%= f.submit "Post Review" %>
+    
+<% end %>
