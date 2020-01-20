@@ -2,22 +2,29 @@ class MoviesController < ApplicationController
 
     before_action :require_signin, except: [:index, :show] 
     before_action :require_admin, except: [:index, :show]
+    before_action :set_params, only: [:show, :edit, :update, :destroy]
 
     def index
-        @movies = Movie.released
+        case params[:filter]
+        when "upcoming"
+            @movies = Movie.upcoming
+        when "recent"
+            @movies = Movie.recent
+        else
+            @movies = Movie.released
+        end
     end
 
     def show
-        @movies = Movie.find(params[:id])
         @fans = @movies.fans
+        @genre = @movies.genres
     end
 
     def edit
-        @movies = Movie.find(params[:id])
+
     end
 
     def update
-        @movies = Movie.find(params[:id])
        if @movies.update(movie_params)
             flash[:notice] = "Movie succesfully updated" 
             redirect_to @movies
@@ -40,15 +47,19 @@ class MoviesController < ApplicationController
     end
 
     def destroy
-        @movies = Movie.find(params[:id])
         @movies.destroy
         redirect_to movies_path
-    end
+    end  
 
     private 
 
     def movie_params
         params.require(:movie).
-        permit(:title, :description, :rating, :released_on, :total_gross, :director, :duration, :image_file_name)
+        permit(:title, :description, :rating, :released_on, :total_gross, :director, :duration, :image_file_name, genre_ids: [])
     end
+
+    def set_params
+        @movies = Movie.find_by!(slug: params[:id])
+    end
+
 end

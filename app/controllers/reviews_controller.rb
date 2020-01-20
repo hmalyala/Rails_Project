@@ -1,7 +1,7 @@
 class ReviewsController < ApplicationController
 
     before_action :require_signin, except: [:index]
-    before_action :set_movie
+    before_action :set_params
 
     def index
         @review = @movie.reviews
@@ -27,11 +27,11 @@ class ReviewsController < ApplicationController
     def review_params
         params.require(:review).
             permit(:stars, :comment)
-    end
+    end    
 
-    def set_movie
-        @movie = Movie.find(params[:movie_id])
-    end        
+    def set_params
+        @movie = Movie.find_by!(slug: params[:movie_id])
+    end
 
 end
 
