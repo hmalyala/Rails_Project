@@ -11,9 +11,9 @@
   <% end %>
   </div>
 <div class="details">
-  <h1><%= @movies.title %></h1>
+  <h1><%=  @movies.title %></h1>
   <h2>
-    <%= @movies.released_on %> &bull; <%= @movies.rating %>
+    Released on: <%= @movies.released_on.strftime("%d %B, %Y") %> &bull; <%= @movies.rating %>
   </h2>
 
   <div class="reviews">
